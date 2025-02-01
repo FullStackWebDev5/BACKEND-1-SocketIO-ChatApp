@@ -1,0 +1,35 @@
+.chat-space {
+  border: 1px solid #ddd;
+}
+
+.chat-space li.list-group-item {
+  background: #eae7e2;
+  border: none;
+}
+
+.chat-box {
+  background-color: white;
+  width: max-content;
+  padding: 0.5em 1em;
+  border-radius: 6px;
+}
+
+.chat-box.join-chat-box {
+  padding: 0.2em 2em;
+  margin: auto;
+}
+
+.sender-message-box {
+  text-align: right;
+}
+
+.sender-message-box .chat-box {
+  background-color: #e4fedc;
+  float: right;
+}
+
+.chat-box-username {
+  font-size: 0.8em;
+  color: #3D52A0;
+  font-weight: bold;
+}

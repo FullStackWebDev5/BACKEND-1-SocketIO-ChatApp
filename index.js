@@ -11,30 +11,36 @@ app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 app.use(express.static(__dirname + '/public'))
 
-const users = {
-  'Z7PoqB9-uCkBvziiAAAL': 'Sanchay',
-  'AZOC6ez_5n4avA6hAAAN': 'Komal'
-}
+const users = {}
 
 // Handle client connections (event: 'connection')
 io.on('connection', (socket) => {
   console.log('A user connected', socket.id)
 
-  // Handle custom event from the client
-  socket.on('newMessage', ({ name, message }) => {
+  socket.on('setUsername', (name) => {
     users[socket.id] = name
-    console.log(`User ${name}: ${message}`)
+    console.log(`${users[socket.id]} connected`)
+    socket.broadcast.emit('joinMessage', `${users[socket.id]} joined`)
+    socket.emit('joinMessage', 'You joined')
+  })
 
+  // Handle custom event from the client
+  socket.on('newMessage', (message) => {
     // Send custom event from server to the sender client
     // socket.emit('serverMsg', 'Your message was received')
 
     // Send custom event from server to all the client
-    io.emit('serverMsg', `User ${users[socket.id]}: ${message}`)
+    const newMessageDetails = {
+      name: users[socket.id],
+      message: message,
+    }
+    console.log(newMessageDetails)
+    io.emit('newMessageToAll', newMessageDetails)
   })
 
   // Handle client disconnections (event: 'disconnect')
   socket.on('disconnect', () => {
-    console.log('A user disconnected', users[socket.id], socket.id)
+    console.log(`${users[socket.id]} disconnected`)
   })
 })
 
@@ -56,6 +62,7 @@ server.listen(3000, () => {
         - io.on('connection', (socket) => {}): Client connections
         - socket.on('disconnect', () => {}): Client disconnections
         - socket.emit('event2', message): Send a custom event from the server to a sender client
+        - socket.broadcast.emit('event2', message): Send a custom event from the server to all clients except the sender
         - io.emit('event2', message): Send a custom event from the server to all the clients
         - socket.on('event1', () => {}): Handle custom event from the client
       - Client
