@@ -1,4 +1,7 @@
 const express = require('express')
+const dotenv = require('dotenv')
+dotenv.config()
+const mongoose = require('mongoose')
 const { createServer } = require('http')
 const bodyParser = require('body-parser')
 const { Server } = require("socket.io")
@@ -10,6 +13,29 @@ const io = new Server(server)
 app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 app.use(express.static(__dirname + '/public'))
+
+const connectToDb = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URL)
+    console.log('Database connected ✅')
+  } catch (error) {
+    console.log('Database error: ', error)
+  }
+}
+const messageSchema = new mongoose.Schema({
+  name: String,
+  message: String,
+})
+const Message = mongoose.model('Message', messageSchema)
+
+const saveMessage = async ({ name, message }) => {
+  try {
+    await Message.create({ name, message })
+    console.log('Message synced')
+  } catch (error) {
+    console.log('DB Error', error)
+  }
+}
 
 const users = {}
 
@@ -25,7 +51,7 @@ io.on('connection', (socket) => {
   })
 
   // Handle custom event from the client
-  socket.on('newMessage', (message) => {
+  socket.on('newMessage', async (message) => {
     // Send custom event from server to the sender client
     // socket.emit('serverMsg', 'Your message was received')
 
@@ -34,7 +60,8 @@ io.on('connection', (socket) => {
       name: users[socket.id],
       message: message,
     }
-    console.log(newMessageDetails)
+    
+    saveMessage(newMessageDetails)
     io.emit('newMessageToAll', newMessageDetails)
   })
 
@@ -50,6 +77,7 @@ app.get('/', (req, res) => {
 
 server.listen(3000, () => {
   console.log('Server is running at http://localhost:3000')
+  connectToDb()
 })
 
 
