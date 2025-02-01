@@ -22,6 +22,7 @@ io.on('connection', (socket) => {
     socket.join(room)
     console.log(`${users[socket.id].name} connected`)
     socket.broadcast.to(room).emit('joinMessage', `${users[socket.id].name} joined`)
+    socket.emit('joinMessage', 'You joined')
   })
 
   // Handle custom event from the client
@@ -55,6 +56,7 @@ server.listen(3000, () => {
     - Rooms: Group multiple clients together so that they can send messages to each other
     - Server
       - socket.join(room): Joining a specific room
+      - socket.emit('event2', message): Send a custom event from the server to a sender client
       - socket.broadcast.to(room).emit('event2', message): Send a custom event from the server to all clients except the sender in the room
       - io.to(room).emit('event2', message): Send a custom event from the server to all the clients in the room
 */
