@@ -71,10 +71,6 @@ io.on('connection', (socket) => {
   })
 })
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!')
-})
-
 server.listen(3000, () => {
   console.log('Server is running at http://localhost:3000')
   connectToDb()

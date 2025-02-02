@@ -1,5 +1,7 @@
 .chat-space {
   border: 1px solid #ddd;
+  min-height: 20em;
+  background: #eae7e2;
 }
 
 .chat-space li.list-group-item {
@@ -17,10 +19,6 @@
 .chat-box.join-chat-box {
   padding: 0.2em 2em;
   margin: auto;
-}
-
-.sender-message-box {
-  text-align: right;
 }
 
 .sender-message-box .chat-box {
