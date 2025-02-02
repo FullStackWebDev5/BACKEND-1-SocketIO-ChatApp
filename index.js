@@ -65,6 +65,14 @@ io.on('connection', (socket) => {
     io.emit('newMessageToAll', newMessageDetails)
   })
 
+  socket.on('startedTyping', () => {
+    socket.broadcast.emit('userTyping', users[socket.id])
+  })
+
+  socket.on('stoppedTyping', () => {
+    socket.broadcast.emit('userStoppedTyping')
+  })
+
   // Handle client disconnections (event: 'disconnect')
   socket.on('disconnect', () => {
     console.log(`${users[socket.id]} disconnected`)
