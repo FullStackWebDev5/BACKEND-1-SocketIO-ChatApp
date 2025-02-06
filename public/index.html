@@ -34,7 +34,7 @@
         <span id="typing-message"></span>
       </ul>
       <div class="d-flex justify-content-between">
-        <input type="text" class="form-control" id="message" placeholder="Type a message" aria-describedby="emailHelp" autocomplete="off" style="border-radius: 0;" onkeyup="startedTyping()" onblur="stoppedTyping()">
+        <input type="text" class="form-control" id="message" placeholder="Type a message" aria-describedby="emailHelp" autocomplete="off" style="border-radius: 0;" onkeyup="startedTyping()" onblur="stoppedTyping()" disabled="true">
         <button type="button" class="btn btn-dark" onclick="sendMessage()" style="border-radius: 0;">Send</button>
       </div>
     </form>
@@ -54,6 +54,7 @@
       socket.emit('setUsername', name)
       document.getElementById('name').disabled = true
       document.getElementById('username-btn').disabled = true
+      document.getElementById('message').disabled = false
     }
 
     function sendMessage() {
