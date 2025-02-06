@@ -47,6 +47,10 @@
 
     function setUsername() {
       const name = document.getElementById('name').value
+      if(!name) {
+        alert('Please enter a valid name!')
+        return
+      }
       socket.emit('setUsername', name)
       document.getElementById('name').disabled = true
       document.getElementById('username-btn').disabled = true
