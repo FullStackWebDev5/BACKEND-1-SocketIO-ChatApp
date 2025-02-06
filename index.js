@@ -79,8 +79,8 @@ io.on('connection', (socket) => {
   })
 })
 
-server.listen(3000, () => {
-  console.log('Server is running at http://localhost:3000')
+server.listen(process.env.PORT, () => {
+  console.log('Server is ready to use ✅')
   connectToDb()
 })
 
