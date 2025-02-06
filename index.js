@@ -84,7 +84,6 @@ server.listen(process.env.PORT, () => {
   connectToDb()
 })
 
-
 /*
   # Socket Programming
     - Websockets: The WebSocket API makes it possible to open a two-way interactive communication session between the user's browser and a server
